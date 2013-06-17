@@ -1,6 +1,11 @@
 package net.homeip.tedk.maricoparestaurantratings;
 
+import net.homeip.tedk.maricoparestaurantratings.foursquare.Explore;
+import net.homeip.tedk.maricoparestaurantratings.foursquare.LocationManager;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -14,14 +19,27 @@ public class TestActivity extends Activity {
 	super.onCreate(savedInstanceState);
 	setContentView(R.layout.activity_test);
 	
+	final Context appContext = getApplicationContext();
+	Version.Init(getApplicationContext());
+	
 	Button buttonTest = (Button) findViewById(R.id.buttonTest);
 	buttonTest.setOnClickListener(new OnClickListener() {
 	    @Override
 	    public void onClick(View v) {
-		// TODO Auto-generated method stub
-		
+		LocationManager.getLocation(appContext, new LocationManager.Listener() {
+		    @Override
+		    public void onResult(Location location) {
+			Explore.execute(appContext, new Explore.Listener() {    
+			    @Override
+			    public void onResult(String result) {
+				new AlertDialog.Builder(TestActivity.this).setTitle("Result").setMessage(result).setNeutralButton("Close", null).show();
+			    }
+			}, location);
+		    }
+		});
 	    }
 	});
+	
     }
 
     @Override

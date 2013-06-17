@@ -18,6 +18,8 @@
         android:id="@+id/buttonTest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
         android:text="Test" />
 
 </RelativeLayout>
