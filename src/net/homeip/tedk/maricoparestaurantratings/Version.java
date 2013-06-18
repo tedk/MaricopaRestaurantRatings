@@ -42,22 +42,22 @@ public class Version {
 	}
     }
     
-    public static synchronized int getVersionCode() {
+    public static int getVersionCode() {
 	checkInit();
 	return VersionCode;
     }
 
-    public static synchronized String getVersionName() {
+    public static String getVersionName() {
 	checkInit();
         return VersionName;
     }
 
-    public static synchronized Date getInstallDate() {
+    public static Date getInstallDate() {
 	checkInit();
         return InstallDate;
     }
     
-    public static synchronized String getInstallDateString() {
+    public static String getInstallDateString() {
 	return InstallDateFormat.format(getInstallDate());
     }
 
