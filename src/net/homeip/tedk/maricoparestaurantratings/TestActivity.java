@@ -1,6 +1,9 @@
 package net.homeip.tedk.maricoparestaurantratings;
 
+import java.util.List;
+
 import net.homeip.tedk.maricoparestaurantratings.foursquare.Explore;
+import net.homeip.tedk.maricoparestaurantratings.foursquare.Venue;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -34,11 +37,11 @@ public class TestActivity extends Activity {
 					    new Explore.Listener() {
 						@Override
 						public void onResult(
-							String result) {
+							List<Venue> result) {
 						    new AlertDialog.Builder(
 							    TestActivity.this)
 							    .setTitle("Result")
-							    .setMessage(result)
+							    .setMessage(result.size())
 							    .setNeutralButton(
 								    "Close",
 								    null)
@@ -49,7 +52,7 @@ public class TestActivity extends Activity {
 				    new AlertDialog.Builder(
 					    TestActivity.this)
 					    .setTitle("Result")
-					    .setMessage("no location")
+					    .setMessage("no location available")
 					    .setNeutralButton(
 						    "Close",
 						    null)

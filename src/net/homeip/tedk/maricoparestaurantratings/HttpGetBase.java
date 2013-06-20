@@ -1,4 +1,4 @@
-package net.homeip.tedk.maricoparestaurantratings.foursquare;
+package net.homeip.tedk.maricoparestaurantratings;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -6,10 +6,6 @@ import java.net.URLEncoder;
 import java.util.Scanner;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import net.homeip.tedk.maricoparestaurantratings.Version;
-
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -19,34 +15,37 @@ import android.os.Handler;
 import android.util.Log;
 
 /**
- * Base class for foursquare get operations
+ * Base class for http get operations
  * 
- * Parameters: 0: action 1, 3, 5, ...: querystring name 2, 4, 6, ...:
+ * Parameters: 0: baseUrl; 1, 3, 5, ...: querystring name; 2, 4, 6, ...:
  * querystring value
  */
-public class BaseGet extends AsyncTask<String, Void, JSONObject> {
+public abstract class HttpGetBase<T> extends AsyncTask<String, Void, T> {
     
-    public static interface Listener {
-	public void onResult(JSONObject result);
+    public static interface Listener<T> {
+	public void onResult(T result);
     }
     
-    private Context context;
-    private Listener listener;
+    protected abstract String getBaseUrl();
+    protected abstract T handleResult(String result);
     
-    public BaseGet(Context context, Listener listener) {
+    private Context context;
+    private Listener<T> listener;
+    
+    public HttpGetBase(Context context, Listener<T> listener) {
 	this.context = context;
 	this.listener = listener;
     }
 
     @Override
-    protected JSONObject doInBackground(String... params) {
+    protected T doInBackground(String... params) {
 
 	if (params == null || params.length == 0) {
-	    Log.e("BaseGet", "no action provided");
+	    Log.e("HttpGetBase", "no action provided");
 	    throw new IllegalArgumentException("must provide an action");
 	}
-	if (params.length % 2 != 1) {
-	    Log.e("BaseGet", "wrong number of querystring parameters: " + params.length);
+	if (params.length % 2 != 0) {
+	    Log.e("HttpGetBase", "wrong number of querystring parameters: " + params.length);
 	    throw new IllegalArgumentException(
 		    "must provide a querystring value for every querystring name");
 	}
@@ -55,21 +54,18 @@ public class BaseGet extends AsyncTask<String, Void, JSONObject> {
 	NetworkInfo ni = cm.getActiveNetworkInfo();
 	if (ni == null || !ni.getState().equals(NetworkInfo.State.CONNECTED))
 	{
-	    Log.d("BaseGet", "no connection");
+	    Log.d("HttpGetBase", "no connection");
 	    return null;
 	}
 
 	InputStream is = null;
 	Scanner s = null;
-	JSONObject  jsonOutput = null;
+	T result = null;
 	try {
 
 	    StringBuilder url = new StringBuilder(
-		    "https://api.foursquare.com/v2/");
-	    url.append(params[0]);
-	    url.append("?v=" + Version.getInstallDateString());
-	    url.append("&client_id=1IVDCV2P3I32ZTV3XQKUUV3QS0OWMH1SK0ZEAVPHJYNREFDT");
-	    url.append("&client_secret=BVX0CEGDZP3ZCDGLMPPZJ2XR2PUVMZATAIZ20SGVHUWJO1KM");
+		    getBaseUrl());
+
 	    if (params.length > 1) {
 		for (int i = 1; i < params.length; i += 2) {
 		    url.append("&");
@@ -87,7 +83,7 @@ public class BaseGet extends AsyncTask<String, Void, JSONObject> {
 	    start = cleanUrl.indexOf("&client_secret=") + 15;
 	    end = cleanUrl.indexOf("&", start);
 	    cleanUrl = cleanUrl.substring(0, start) + "*" + cleanUrl.substring(end);
-	    Log.d("BaseGet", "connecting to: " + cleanUrl);
+	    Log.d("HttpGetBase", "connecting to: " + cleanUrl);
 	    URL serverUrl = new URL(urlStr);
 
 	    HttpsURLConnection conn = (HttpsURLConnection) serverUrl
@@ -101,25 +97,13 @@ public class BaseGet extends AsyncTask<String, Void, JSONObject> {
 	    String output = s.hasNext() ? s.next() : null;
 	    
 	    if(output != null) {
-		JSONObject root = new JSONObject(output);
-		JSONObject meta = root.getJSONObject("meta");
-		int code = meta.getInt("code");
-		Log.d("BaseGet", "response code " + code);
-		if(meta.has("errorType")) {
-		    String errorType = meta.getString("errorType");
-		    String errorDetail = meta.getString("errorDetail");
-		    Log.d("BaseGet", "error: " + errorType + ": " + errorDetail);
-		}
-		if(root.has("response")) {
-		    jsonOutput = root.getJSONObject("response");
-		    Log.d("BaseGet", "response size: " + jsonOutput.length());
-		}
+		result = handleResult(output);
 	    } else {
-		jsonOutput = null;
-		Log.d("BaseGet", "no response");
+		result = null;
+		Log.d("HttpGetBase", "no response");
 	    }
 	} catch (Exception e) {
-	    Log.e("BaseGet", "Could not get http response", e);
+	    Log.e("HttpGetBase", "Could not get http response", e);
 	    if (s != null) {
 		try {
 		    s.close();
@@ -134,11 +118,11 @@ public class BaseGet extends AsyncTask<String, Void, JSONObject> {
 	    }
 	}
 	
-	return jsonOutput;
+	return result;
     }
     
     @Override
-    protected void onPostExecute(final JSONObject result) {
+    protected void onPostExecute(final T result) {
         super.onPostExecute(result);
         new Handler().post(new Runnable() {
 	    @Override

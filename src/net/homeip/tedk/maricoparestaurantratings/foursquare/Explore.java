@@ -13,16 +13,16 @@ import android.util.Log;
 public class Explore {
 
     public static interface Listener {
-	public void onResult(String result);
+	public void onResult(List<Venue> result);
     }
 
     public static void execute(final Context context, final Listener listener,
 	    final Location location) {
-	BaseGet bg = new BaseGet(context, new BaseGet.Listener() {
+	ApiBase ab = new ApiBase(context, new ApiBase.Listener() {
 	    @Override
 	    public void onResult(JSONObject result) {
 		if (result == null) {
-		    listener.onResult("no results");
+		    listener.onResult(null);
 		    return;
 		}
 
@@ -52,30 +52,18 @@ public class Explore {
 		    Log.e("Explore", "unable to parse JSON", e);
 		}
 
-		StringBuilder sb = new StringBuilder();
-		for (Venue venue : venues) {
-		    sb.append(venue.getName() + "\n");
-		}
-		String output = sb.toString();
-
-		Log.d("Explore", output);
-		listener.onResult(output);
+		Log.d("Explore", "Venues: " + venues.size());
+		listener.onResult(venues);
 	    }
-	});
+	}, "venues/explore");
 
 	String[] params = new String[] {
-		"venues/explore",
-		"section",
-		"food",
-		"ll",
-		location.getLatitude() + "," + location.getLongitude(),
-		"llAcc",
-		location.hasAccuracy() ? Float.toString(location.getAccuracy())
-			: "10000.0",
-		"alt",
-		location.hasAltitude() ? Double
-			.toString(location.getAltitude()) : "0", };
-	bg.execute(params);
+		"section", "food",
+		"ll", location.getLatitude() + "," + location.getLongitude(),
+		"llAcc", location.hasAccuracy() ? Float.toString(location.getAccuracy()) : "10000.0",
+		"alt", location.hasAltitude() ? Double.toString(location.getAltitude()) : "0", 
+	};
+	ab.execute(params);
     }
 
 }
