@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.homeip.tedk.maricoparestaurantratings.foursquare.Explore;
 import net.homeip.tedk.maricoparestaurantratings.foursquare.Venue;
+import net.homeip.tedk.maricoparestaurantratings.maricopa.Search;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -38,14 +39,24 @@ public class TestActivity extends Activity {
 						@Override
 						public void onResult(
 							List<Venue> result) {
-						    new AlertDialog.Builder(
-							    TestActivity.this)
-							    .setTitle("Result")
-							    .setMessage(result.size())
-							    .setNeutralButton(
-								    "Close",
-								    null)
-							    .show();
+//						    new AlertDialog.Builder(
+//							    TestActivity.this)
+//							    .setTitle("Result")
+//							    .setMessage(result.size())
+//							    .setNeutralButton(
+//								    "Close",
+//								    null)
+//							    .show();
+						    if(result != null && result.size() > 0) {
+							Venue v = result.get(0);
+							Search.execute(appContext, new Search.Listener() {
+							    @Override
+							    public void onResult(boolean result) {
+								// TODO Auto-generated method stub
+								
+							    }
+							},v.getName(), v.getPostalCode());
+						    }
 						}
 					    }, location);
 				} else {

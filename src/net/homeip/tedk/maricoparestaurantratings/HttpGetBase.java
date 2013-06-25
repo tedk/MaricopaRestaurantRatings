@@ -1,11 +1,10 @@
 package net.homeip.tedk.maricoparestaurantratings;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Scanner;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -67,7 +66,7 @@ public abstract class HttpGetBase<T> extends AsyncTask<String, Void, T> {
 		    getBaseUrl());
 
 	    if (params.length > 1) {
-		for (int i = 1; i < params.length; i += 2) {
+		for (int i = 0; i < params.length; i += 2) {
 		    url.append("&");
 		    url.append(URLEncoder.encode(params[i], "UTF-8"));
 		    if (params[i + 1] != null) {
@@ -77,19 +76,14 @@ public abstract class HttpGetBase<T> extends AsyncTask<String, Void, T> {
 		}
 	    }
 	    String urlStr = url.toString();
-	    int start = urlStr.indexOf("&client_id=") + 11;
-	    int end = urlStr.indexOf("&", start);
-	    String cleanUrl = urlStr.substring(0, start) + "*" + urlStr.substring(end);
-	    start = cleanUrl.indexOf("&client_secret=") + 15;
-	    end = cleanUrl.indexOf("&", start);
-	    cleanUrl = cleanUrl.substring(0, start) + "*" + cleanUrl.substring(end);
+	    String cleanUrl = urlStr.contains("?") ? urlStr.substring(0, urlStr.indexOf("?")) : urlStr;
 	    Log.d("HttpGetBase", "connecting to: " + cleanUrl);
 	    URL serverUrl = new URL(urlStr);
 
-	    HttpsURLConnection conn = (HttpsURLConnection) serverUrl
+	    HttpURLConnection conn = (HttpURLConnection) serverUrl
 		    .openConnection();
-	    conn.setConnectTimeout(5000);
-	    conn.setReadTimeout(5000);
+	    conn.setConnectTimeout(15000);
+	    conn.setReadTimeout(15000);
 	    conn.setDoOutput(false);
 	    conn.setRequestMethod("GET");
 	    is = conn.getInputStream();
