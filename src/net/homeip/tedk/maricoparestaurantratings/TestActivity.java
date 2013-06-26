@@ -39,41 +39,40 @@ public class TestActivity extends Activity {
 						@Override
 						public void onResult(
 							List<Venue> result) {
-//						    new AlertDialog.Builder(
-//							    TestActivity.this)
-//							    .setTitle("Result")
-//							    .setMessage(result.size())
-//							    .setNeutralButton(
-//								    "Close",
-//								    null)
-//							    .show();
-						    if(result != null && result.size() > 0) {
-							Venue v = result.get(0);
-							Search.execute(appContext, new Search.Listener() {
-							    @Override
-							    public void onResult(boolean result) {
-								// TODO Auto-generated method stub
-								
-							    }
-							},v.getName(), v.getPostalCode());
+						    if (result != null
+							    && result.size() > 1) {
+							Venue v = result.get(1);
+							Search.execute(
+								appContext,
+								new Search.Listener() {
+								    @Override
+								    public void onResult(
+									    List<String> result) {
+									if(result.size() > 0) {
+									    showAlert(result.get(0));
+									} else {
+									    showAlert("no permits found");
+									}
+								    }
+								},
+								v.getName(),
+								v.getCity());
 						    }
 						}
 					    }, location);
 				} else {
-				    new AlertDialog.Builder(
-					    TestActivity.this)
-					    .setTitle("Result")
-					    .setMessage("no location available")
-					    .setNeutralButton(
-						    "Close",
-						    null)
-					    .show();
+				    showAlert("no location available");
 				}
 			    }
 			});
 	    }
 	});
 
+    }
+
+    public void showAlert(String message) {
+	new AlertDialog.Builder(TestActivity.this).setTitle("Result")
+		.setMessage(message).setNeutralButton("Close", null).show();
     }
 
     @Override

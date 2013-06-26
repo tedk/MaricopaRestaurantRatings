@@ -1,6 +1,6 @@
 package net.homeip.tedk.maricoparestaurantratings.foursquare;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -26,7 +26,7 @@ public class Explore {
 		    return;
 		}
 
-		List<Venue> venues = new LinkedList<Venue>();
+		List<Venue> venues = new ArrayList<Venue>();
 		try {
 		    if (result.has("groups")) {
 			JSONArray groups = result.getJSONArray("groups");

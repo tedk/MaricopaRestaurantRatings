@@ -2,10 +2,25 @@ package net.homeip.tedk.maricoparestaurantratings.maricopa;
 
 import net.homeip.tedk.maricoparestaurantratings.HttpGetBase;
 import android.content.Context;
+import android.util.Log;
 
-public class MaricopaQueryBase extends HttpGetBase<String> {
+public class MaricopaQueryBase extends HttpGetBase<MaricopaQueryBase.QueryResult> {
     
-    public static interface Listener extends HttpGetBase.Listener<String> {};
+    public static class QueryResult {
+	
+	private int size;
+	private String subHtml;
+	
+	private QueryResult(int size, String subHtml){
+	    this.size = size;
+	    this.subHtml = subHtml;
+	}
+	
+	public int getSize() { return this.size; }
+	public String getSubHtml() { return this.subHtml; }
+    }
+    
+    public static interface Listener extends HttpGetBase.Listener<MaricopaQueryBase.QueryResult> {};
     
     private String navigatedFrom = null;
 
@@ -23,9 +38,24 @@ public class MaricopaQueryBase extends HttpGetBase<String> {
     }
     
     @Override
-    protected String handleResult(String result) {
-        // TODO Auto-generated method stub
-        return null;
+    protected MaricopaQueryBase.QueryResult handleResult(String result) {
+	int startIndex = result.indexOf("<span id=\"displayGridStyle_LabelNumrows\"");
+	startIndex = result.indexOf("Total Records Retrieved", startIndex);
+	startIndex = result.indexOf("[", startIndex) + 1;
+	int endIndex = result.indexOf("]", startIndex);
+	String numResultsStr = result.substring(startIndex, endIndex);
+	startIndex = result.indexOf("</span>") + 7;
+	endIndex = result.indexOf("<!-- InstanceBeginEditable name = \"Help or Faqs\" -->", startIndex);
+	String html = result.substring(startIndex, endIndex);
+	int numResults = 0;
+	if(numResultsStr != null && numResultsStr.length() > 0) {
+	    try {
+		numResults = Integer.parseInt(numResultsStr);
+	    } catch (Exception e) {
+		Log.d("MaricopaQueryBase", "could not read records retrieved", e);
+	    }
+	}
+        return new MaricopaQueryBase.QueryResult(numResults, html);
     }
     
 }

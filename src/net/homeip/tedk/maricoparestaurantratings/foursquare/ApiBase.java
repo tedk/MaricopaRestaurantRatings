@@ -38,15 +38,15 @@ public class ApiBase extends HttpGetBase<JSONObject> {
 		JSONObject root = new JSONObject(result);
 		JSONObject meta = root.getJSONObject("meta");
 		int code = meta.getInt("code");
-		Log.d("BaseGet", "response code " + code);
+		Log.d("ApiBase", "response code " + code);
 		if (meta.has("errorType")) {
 		    String errorType = meta.getString("errorType");
 		    String errorDetail = meta.getString("errorDetail");
-		    Log.d("BaseGet", "error: " + errorType + ": " + errorDetail);
+		    Log.d("ApiBase", "error: " + errorType + ": " + errorDetail);
 		}
 		if (root.has("response")) {
 		    jsonOutput = root.getJSONObject("response");
-		    Log.d("BaseGet", "response size: " + jsonOutput.length());
+		    Log.d("ApiBase", "response size: " + jsonOutput.length());
 		}
 	    } catch (Exception e) {
 		Log.e("ApiBase", "could not parse JSON: " + result);
