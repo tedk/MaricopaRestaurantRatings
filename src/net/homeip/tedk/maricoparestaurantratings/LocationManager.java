@@ -11,8 +11,8 @@ import android.util.Log;
 
 public class LocationManager {
 
-	private static final long ACQUISITION_TIMEOUT = 10000; // 10 secs
-	private static final long LOCATION_TIMEOUT = 300000; // 5 mins
+	private static final long ACQUISITION_TIMEOUT = 15000; // 15 secs
+	private static final long LOCATION_TIMEOUT = 0; // 300000; // 5 mins
 
 	private static final String GPS_PROVIDER = android.location.LocationManager.GPS_PROVIDER;
 	private static final String NETWORK_PROVIDER = android.location.LocationManager.NETWORK_PROVIDER;

@@ -79,6 +79,7 @@ public abstract class HttpGetBase<T> extends AsyncTask<String, Void, T> {
 			String urlStr = url.toString();
 			String cleanUrl = urlStr.contains("?") ? urlStr.substring(0,
 					urlStr.indexOf("?")) : urlStr;
+			//Log.d("HttpGetBase", "connecting to: " + urlStr);
 			Log.d("HttpGetBase", "connecting to: " + cleanUrl);
 			URL serverUrl = new URL(urlStr);
 

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.text.Html;
 
 public class Search {
 
@@ -56,26 +57,29 @@ public class Search {
 		int startIndex = row.indexOf("<td");
 		startIndex = row.indexOf("><a href=\"") + 10;
 		int endIndex = row.indexOf("\"", startIndex);
-		p.url = "http://www.maricopa.gov" + row.substring(startIndex, endIndex);
+		p.setUrl("http://www.maricopa.gov" + Html.fromHtml(row.substring(startIndex, endIndex).toString()));
 		startIndex = row.indexOf(">", endIndex) + 1;
 		endIndex = row.indexOf("</a>", startIndex);
-		p.id = row.substring(startIndex, endIndex);
+		p.setId(row.substring(startIndex, endIndex).trim());
 		startIndex = row.indexOf("<td", endIndex);
+		startIndex = row.indexOf("<font", startIndex);
 		startIndex = row.indexOf(">", startIndex) + 1;
-		endIndex = row.indexOf("</td>", startIndex);
-		p.name = row.substring(startIndex, endIndex);
+		endIndex = row.indexOf("</font>", startIndex);
+		p.setName(row.substring(startIndex, endIndex).trim());
 		startIndex = row.indexOf("><a href=\"", endIndex) + 10;
 		startIndex = row.indexOf(">", startIndex) + 1;
-		endIndex = row.indexOf("</td>", startIndex);
-		p.address = row.substring(startIndex, endIndex);
+		endIndex = row.indexOf("</a>", startIndex);
+		p.setAddress(row.substring(startIndex, endIndex).trim());
 		startIndex = row.indexOf("<td", endIndex);
+		startIndex = row.indexOf("<font", startIndex);
 		startIndex = row.indexOf(">", startIndex) + 1;
-		endIndex = row.indexOf("</td>", startIndex);
-		p.city = row.substring(startIndex, endIndex);
+		endIndex = row.indexOf("</font>", startIndex);
+		p.setCity(row.substring(startIndex, endIndex).trim());
 		startIndex = row.indexOf("<td", endIndex);
+		startIndex = row.indexOf("<font", startIndex);
 		startIndex = row.indexOf(">", startIndex) + 1;
-		endIndex = row.indexOf(">", startIndex);
-		p.zip = row.substring(startIndex, endIndex);
+		endIndex = row.indexOf("</font>", startIndex);
+		p.setZip(row.substring(startIndex, endIndex).trim());
 		return p;
 	}
 

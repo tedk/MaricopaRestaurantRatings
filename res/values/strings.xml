@@ -4,5 +4,16 @@
     <string name="app_name">Maricopa Restaurant Ratings</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">Maricopa Restaurant Ratings</string>
+    <string name="app_description"></string>
+    <string name="seal_description">Maircopa County Seal</string>
+    <string name="powered_by_foursquare">Powered by Foursquare</string>
+    <string name="nearby">Nearby</string>
+    <string name="search">Search</string>
+    <string name="title_activity_nearby">Nearby</string>
+    <string name="title_activity_search">Search</string>
+    <string name="label_name">Name</string>
+    <string name="label_city">City</string>
+    <string name="label_search">Search</string>
+    <string name="title_activity_permits">Permits</string>
 
 </resources>

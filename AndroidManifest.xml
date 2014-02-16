@@ -14,8 +14,16 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name" >
+        android:icon="@drawable/header_logo_crop"
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.Holo.Light" >
+
+        <!--
+             <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        -->
+        <!--
         <activity
             android:name="net.homeip.tedk.maricoparestaurantratings.activities.TestActivity"
             android:label="@string/app_name" >
@@ -25,6 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        -->
         <activity
             android:name="net.homeip.tedk.maricoparestaurantratings.activities.MainActivity"
             android:label="@string/title_activity_main" >
@@ -33,6 +42,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="net.homeip.tedk.maricoparestaurantratings.activities.NearbyActivity"
+            android:label="@string/title_activity_nearby" >
+        </activity>
+        <activity
+            android:name="net.homeip.tedk.maricoparestaurantratings.activities.SearchActivity"
+            android:label="@string/title_activity_search" >
+        </activity>
+        <activity
+            android:name="net.homeip.tedk.maricoparestaurantratings.activities.PermitsActivity"
+            android:label="@string/title_activity_permits" >
         </activity>
     </application>
 

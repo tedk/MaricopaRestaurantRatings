@@ -14,7 +14,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -56,7 +55,7 @@ public class TestActivity extends Activity {
 																		if (result
 																				.size() > 0) {
 																			showAlert(result
-																					.get(0).url);
+																					.get(0).getUrl());
 																		} else {
 																			showAlert("no permits found");
 																		}
@@ -79,13 +78,6 @@ public class TestActivity extends Activity {
 	public void showAlert(String message) {
 		new AlertDialog.Builder(TestActivity.this).setTitle("Result")
 				.setMessage(message).setNeutralButton("Close", null).show();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.test, menu);
-		return true;
 	}
 
 }

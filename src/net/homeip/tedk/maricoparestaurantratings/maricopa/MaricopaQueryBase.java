@@ -54,8 +54,8 @@ public class MaricopaQueryBase extends
 		startIndex = result.indexOf("[", startIndex) + 1;
 		int endIndex = result.indexOf("]", startIndex);
 		String numResultsStr = result.substring(startIndex, endIndex);
-		startIndex = result.indexOf("<table", endIndex) + 7;
-		endIndex = result.indexOf("</table>", startIndex);
+		startIndex = result.indexOf("<table", endIndex);
+		endIndex = result.indexOf("</table>", startIndex) + 8;
 		String html = result.substring(startIndex, endIndex);
 		int numResults = 0;
 		if (numResultsStr != null && numResultsStr.length() > 0) {
