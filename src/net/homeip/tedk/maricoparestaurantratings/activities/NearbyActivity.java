@@ -73,7 +73,7 @@ public class NearbyActivity extends ListActivity {
 	};
 	
 	dialog.setMessage("Determining your location");
-	LocationManager.getLocation(NearbyActivity.this, locationListener);
+	LocationManager.getLocationManager(NearbyActivity.this).getLocation(NearbyActivity.this, locationListener);
     }
     
     private ListAdapter getAdapter(List<Venue> venues) {

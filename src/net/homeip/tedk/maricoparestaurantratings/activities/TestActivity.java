@@ -32,7 +32,7 @@ public class TestActivity extends Activity {
 		buttonTest.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				LocationManager.getLocation(appContext,
+				LocationManager.getLocationManager(appContext).getLocation(appContext,
 						new LocationManager.Listener() {
 							@Override
 							public void onResult(Location location) {
