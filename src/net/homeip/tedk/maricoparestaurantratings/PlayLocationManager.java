@@ -55,7 +55,7 @@ public class PlayLocationManager extends LocationManager implements
 	location = locationClient.getLastLocation();
 
 	LocationRequest locationRequest = LocationRequest.create();
-	locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+	locationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 	locationRequest.setNumUpdates(1);
 	locationRequest.setExpirationDuration(ACQUISITION_TIMEOUT);
 
